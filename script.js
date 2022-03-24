@@ -5,5 +5,6 @@ let rollback;
 let fullPrice;
 let adaptive;
 
-alert("Hello");
-console.log("Привет, Мир!");
+alert ('Здравствуй, Дружочек-Пирожочек!');
+
+console.log('Я текст в консольки :3');
