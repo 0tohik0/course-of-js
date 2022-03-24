@@ -1,23 +1,21 @@
-let title = "Урок по JavaScript";
-let screens = "Простые, Сложные, Интерактивные";
+let title = 'Проектик по JS';
+let screens = 'Простые, Сложные, Интерактивные';
 let screenPrice = 10;
-let rollback = 50;
+let rollback = 90;
 let fullPrice = 50000;
 let adaptive = false;
 
-console.log(typeof title);
-console.log(typeof fullPrice);
-console.log(typeof adaptive);
 
-console.log(screens.length);
+console.log(typeof title);  //тип данных переменнной title
+console.log(typeof fullPrice);  //тип данных переменнной fullPrice
+console.log(typeof adaptive);  //тип данных переменнной adaptive
 
-console.log("Стоимость вёрстки экранов", screenPrice, "рублей/ долларов/гривен/юани")
-console.log("Стоимость разработки сайта", fullPrice, "рублей/ долларов/гривен/юани")
+console.log(screens.length);  //длина строки screens
 
-console.log(screens.toLowerCase())
-console.log(screens.split(", "))
+console.log('Стоимость верстки экранов', screenPrice, 'рублей/ долларов/гривен/юани');
+console.log('Стоимость разработки сайта', fullPrice, 'рублей/ долларов/гривен/юани');
 
-console.log(fullPrice * (rollback/100))
+console.log(screens.toLowerCase()); //нижний регистр
+console.log(screens.split(",")); //массив
 
-// alert("Hello");
-// console.log("Привет, Мир!");
+console.log('Процент отката посреднику за работу', (fullPrice * (rollback/100))); 
