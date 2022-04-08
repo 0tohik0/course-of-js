@@ -9,32 +9,52 @@ let servicePrice1 = +prompt('Сколько это будет стоить?', '1
 let service2 = prompt('Какой дополнительный тип услуги нужен?', 'service2');
 let servicePrice2 = +prompt('Сколько это будет стоить?', '16000');
 let rollback = 20;
+let allServicePrices;
 let fullPrice = screenPrice + servicePrice1 + servicePrice2;
 let servicePercentPrice = fullPrice - (fullPrice * (rollback / 100));
 
 const showTypeOf = function (variable) {
     console.log(variable, typeof variable);
-}
+};
 
 const getRollbackMessage = function(price) {
     if (price >= 30000) {
        return 'Даем скидку в 10%';
     } else if (30000 > price && price >= 15000) {
         return 'Даем скидку в 5%';
-    } else if ((15000 > price) && (price >= 0)) {
+    } else if (15000 > price && price >= 0) {
         return 'Скидка не предусмотрена';
     } else {
         return 'Что то пошло не так';
     };
 };
 
+const getAllServicePrices = function () {
+    return servicePrice1 + servicePrice2;
+};
+
+function getFullPrice() {
+    return screenPrice + allServicePrices;
+}; 
+    
+function getTitle () {
+    return title.trim()[0].toUpperCase() + title.trim().slice(1);
+};
+
+function getServicePercentPrices () {
+    return fullPrice - (fullPrice * (rollback / 100));
+};
+
+allServicePrices = getAllServicePrices();
+fullPrice = getFullPrice();
+title = getTitle();
+servicePercentPrice = getServicePercentPrices();
+
 showTypeOf(title);
 showTypeOf(screenPrice);
 showTypeOf(adaptive);
 
+console.log('screens ', screens.split(''));
+console.log("Следующие типы экранов: " + screens);
 console.log(getRollbackMessage(fullPrice));
-console.log(typeof title);
-console.log(typeof screenPrice);
-console.log(typeof adaptive);
-
-// console.log(servicePercentPrice);
+console.log("Cтоимость за вычетом процента отката посреднику:" + Math.round(servicePercentPrice));
