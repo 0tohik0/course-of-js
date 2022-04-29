@@ -23,11 +23,17 @@ const appData = {
         return !isNaN(parseFloat(num)) && isFinite(num) && num != 0;
     },
     asking: function () {
-        appData.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
+        do {
+            appData.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
+        } while (isNaN(appData.title) === false)
   
         for (let i = 0; i < 2; i++) {
-            let name = prompt('Какие типы экранов нужно разработать?');
             let servicePrice = 0;
+            let name 
+
+            do {
+                name = prompt('Какие типы экранов нужно разработать?')
+            } while (isNaN(name) === false)
 
             do {
                 servicePrice = +prompt('Сколько будет стоить данная работа?', '15000');
@@ -37,8 +43,12 @@ const appData = {
         }
 
         for (let i = 0; i < 2; i++) {
-            let name = prompt('Какой дополнительный тип услуги нужен?')
-            let servicePrice = 0;
+            let servicePrice = 0
+            let name
+
+            do {
+                name = prompt('Какой дополнительный тип услуги нужен?', "service1");
+            } while (isNaN(name) === false);
     
             do {
                 servicePrice = +prompt('Сколько это будет стоить?', '1500');
@@ -91,5 +101,7 @@ const appData = {
 }
 
 appData.start();
+
+
 
 // console.log(appData.services);
