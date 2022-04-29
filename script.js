@@ -1,30 +1,42 @@
 'use strict';
 
-let title;
-let screens;
-let screenPrice;
-let adaptive;
-let rollback = 20;
-let allServicePrices;
-let fullPrice;
-let servicePercentPrice;
-let service1;
-let service2;
+// let title;
+// let screens;
+// let screenPrice;
+// let adaptive;
+// let rollback = 20;
+// let allServicePrices;
+// let fullPrice;
+// let servicePercentPrice;
+// let service1;
+// let service2;
+
+const appData = {
+    title: '',
+    screens: '',
+    screenPrice: 0,
+    adaptive: true,
+    rollback: 20,
+    allServicePrices: 0,
+    fullPrice: 0,
+    servicePercentPrice: 0,
+    service1: '',
+    service2: '',
+    asking: function () {
+        appData.title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
+        appData.screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные');
+    
+        do {
+            appData.screenPrice = +prompt('Сколько будет стоить данная работа?', '15000');
+        } while(!isNumber(appData.screenPrice)) 
+    
+        appData.adaptive = confirm('Нужен ли адаптив на сайте?');
+    
+    }
+}
 
 const isNumber = function (num) {
     return !isNaN(parseFloat(num)) && isFinite(num) && num != 0;
-}
-
-const asking = function () {
-    title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
-    screens = prompt('Какие типы экранов нужно разработать?', 'Простые, Сложные, Интерактивные');
-
-    do {
-        screenPrice = +prompt('Сколько будет стоить данная работа?', '15000');
-    } while(!isNumber(screenPrice)) 
-
-    adaptive = confirm('Нужен ли адаптив на сайте?');
-
 }
 
 const getAllServicePrices = function () {
@@ -34,9 +46,9 @@ const getAllServicePrices = function () {
     for (let i = 0; i < 2; i++) {
 
         if (i === 0) {
-            service1 = prompt('Какой дополнительный тип услуги нужен?', 'Метрика');
+            appData.service1 = prompt('Какой дополнительный тип услуги нужен?', 'Метрика');
         } else if (i === 1) {
-            service2 = prompt('Какой дополнительный тип услуги нужен?', 'Отправка формы');
+            appData.service2 = prompt('Какой дополнительный тип услуги нужен?', 'Отправка формы');
         }
 
         do {
@@ -51,15 +63,15 @@ const getAllServicePrices = function () {
 };
 
 const getFullPrice = function () {
-    return screenPrice + allServicePrices;
+    return appData.screenPrice + appData.allServicePrices;
 };
 
 const getServicePercentPrices = function () {
-    return fullPrice - (fullPrice * (rollback / 100));
+    return appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
 };
 
 const getTitle = function () {
-    return title.trim()[0].toUpperCase() + title.trim().slice(1);
+    return appData.title.trim()[0].toUpperCase() + appData.title.trim().slice(1);
 };
 
 const getRollbackMessage = function(price) {
@@ -74,9 +86,11 @@ const getRollbackMessage = function(price) {
     };
 }; 
 
-asking();
-allServicePrices = getAllServicePrices();
-fullPrice = getFullPrice();
-title = getTitle();
-servicePercentPrice = getServicePercentPrices();
+appData.asking();
+appData.allServicePrices = getAllServicePrices();
+appData.fullPrice = getFullPrice();
+appData.title = getTitle();
+appData.servicePercentPrice = getServicePercentPrices();
 
+console.log(appData.fullPrice);
+console.log(appData.servicePercentPrice);
