@@ -43,9 +43,7 @@ const appData = {
     
             sum += servicePrice
         }
-    
         return sum
-        // return servicePrice1 + servicePrice2;
     },
     getFullPrice: function () {
         return appData.screenPrice + appData.allServicePrices;
@@ -66,15 +64,21 @@ const appData = {
         } else {
             return 'Что то пошло не так';
         }
+    },
+    start: function () {
+        appData.asking();
+        appData.allServicePrices = appData.getAllServicePrices();
+        appData.fullPrice = appData.getFullPrice();
+        appData.title = appData.getTitle();
+        appData.servicePercentPrice = appData.getServicePercentPrices();
+        appData.logger()
+    },
+    logger: function () {
+        for (let key in appData) {
+            console.log(key + ': ' + appData[key]);
+        }
     }
 }
 
+appData.start();
 
-appData.asking();
-appData.allServicePrices = appData.getAllServicePrices();
-appData.fullPrice = appData.getFullPrice();
-appData.title = appData.getTitle();
-appData.servicePercentPrice = appData.getServicePercentPrices();
-
-console.log(appData.fullPrice);
-console.log(appData.servicePercentPrice);
