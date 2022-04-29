@@ -50,10 +50,6 @@ const getAllServicePrices = function () {
     // return servicePrice1 + servicePrice2;
 };
 
-const showTypeOf = function (variable) {
-    console.log(variable, typeof variable);
-};
-
 const getFullPrice = function () {
     return screenPrice + allServicePrices;
 };
@@ -83,16 +79,4 @@ allServicePrices = getAllServicePrices();
 fullPrice = getFullPrice();
 title = getTitle();
 servicePercentPrice = getServicePercentPrices();
-
-showTypeOf(title);
-showTypeOf(screenPrice);
-showTypeOf(adaptive);
-
-console.log('allServicePrices', allServicePrices);
-
-console.log(getRollbackMessage(fullPrice));
-console.log(typeof title);
-console.log(typeof screenPrice);
-console.log(typeof adaptive);
-console.log("Стоимость верстки экранов " + screenPrice + " рублей и Стоимость разработки сайта " + fullPrice + " рублей");
 
