@@ -17,7 +17,7 @@ const totalCountOther = document.getElementsByClassName('total-input')[2];
 const fullTotalCount = document.getElementsByClassName('total-input')[3];
 const totalCountRollback = document.getElementsByClassName('total-input')[4];
 
-
+let screenCount = 0
 let screens = document.querySelectorAll('.screen');
 
 const appData = {
@@ -34,7 +34,8 @@ const appData = {
     servicesNumber: {},
     init: function () {
         appData.addTitle()
-        startBtn.addEventListener('click', appData.start)
+
+        startBtn.addEventListener('click', appData.buttonBlock)
         buttonPlus.addEventListener('click', appData.addScreenBlock)
     },
     start: function() {
@@ -42,16 +43,42 @@ const appData = {
         appData.addServices()
 
         appData.addPrices()
-        appData.showResult()
         // appData.getServicePercentPrices(),
+        appData.checkingForMistakes()
         // appData.logger()
+        appData.showResult()
+    },
+    buttonBlock: function () {
+        let input
+        let select
+        screens = document.querySelectorAll('.screen')
+        screens.forEach(screen => {
+            input = screen.querySelector('input')
+            select = screen.querySelector('select')
+        })
+        if (select.selectedIndex == 0 || input.value == 0 || input.value == '') {
+            appData.init()
+        } else {
+            appData.start()
+        }
+    },
+    checkingForMistakes: function () {
+        const changing = function(event) {
+            inputRangeValue.textContent = event.target.value + '%'
+            appData.rollback = event.target.value
+        }
+
+        inputRange.addEventListener('input', changing)
     },
     showResult: function () {
         total.value = appData.screenPrice
         totalCountOther.value = appData.servicePricesPercent + appData.servicePricesNumber
         fullTotalCount.value = appData.fullPrice
+        totalCountRollback.value = appData.servicePercentPrice
+        totalCount.value = screenCount
     },
     addScreens: function () {
+        appData.screens.length = 0 
         screens = document.querySelectorAll('.screen')
 
         screens.forEach(function (screen, index) {
@@ -62,11 +89,12 @@ const appData = {
             appData.screens.push({ 
                 id: index, 
                 name: selectName, 
-                price: +select.value * +input.value 
-            })
-        })
+                price: +select.value * +input.value
+            });
 
+        })
         console.log(appData.screens);
+
     },
     addTitle: function () {
         document.title = title.textContent
@@ -100,6 +128,14 @@ const appData = {
         screens[screens.length - 1].before(cloneScreen)
     },
     addPrices: function() {
+
+        let screenCounts = document.querySelectorAll('.screen input')
+
+        screenCounts.forEach(function(item, arr){
+            arr = +item.value
+            screenCount = screenCount + arr
+        })
+
         for (let screen of appData.screens) {
             appData.screenPrice += +screen.price
         }
@@ -109,28 +145,15 @@ const appData = {
         }
 
         for (let key in appData.servicesPercent) {
-            appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100)
+            appData.servicePricesPercent += appData.screenPrice * (appData.servicesPercent[key] / 100);
         }
 
-        appData.fullPrice = appData.screenPrice + appData.servicePricesNumber + appData.servicePricesPercent
+        appData.fullPrice = appData.screenPrice + appData.servicePricesPercent + appData.servicePricesNumber;
+        appData.servicePercentPrice = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100));
     },
     getNumber: function (num) {
         let numNew = Number(String(num).trim())
         return numNew
-    },
-    getServicePercentPrices: function() {
-        appData.servicePercentPrice = appData.screenPrice * (appData.rollback / 100)
-    },
-    getRollbackMessage: function(price) {
-        if (price >= 30000) {
-            return 'Даём скидку в 10%'
-        } else if (15000 <= price && price < 30000) {
-            return 'Даем скидку в 5%'
-        } else if (0 <= price && price < 15000){
-            return 'Скидка не предусмотрена'
-        } else {
-            return 'Что-то пошло не так'
-        }
     },
     logger: function() {
         // for (let key in appData) {
