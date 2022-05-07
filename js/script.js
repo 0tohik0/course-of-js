@@ -9,10 +9,7 @@ const input  = document.querySelector('[type=range]')
 const span   = document.querySelector('.rollback .range-value')
 const inputAll = document.getElementsByClassName('.total-input')
 
-let screen = document.querySelectorAll('.screen ')
-
-console.log(inputAll);
-
+let screen = document.querySelectorAll('.screen')
 
 // const appData = {
 //     title: '',
