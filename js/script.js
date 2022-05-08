@@ -4,6 +4,8 @@ const title = document.getElementsByTagName('h1')[0];
 const buttonPlus = document.querySelector('.screen-btn');
 const otherItemsPercent = document.querySelectorAll('.other-items.percent');
 const otherItemsNumber = document.querySelectorAll('.other-items.number');
+const mainControlsInput = document.querySelector('.main-controls__input')
+const mainBox = document.querySelectorAll('.main-controls__views')[0]
 
 const inputRange = document.querySelector('.rollback [type=range]');
 const inputRangeValue = document.querySelector('.rollback .range-value');
@@ -17,6 +19,7 @@ const totalCountOther = document.getElementsByClassName('total-input')[2];
 const fullTotalCount = document.getElementsByClassName('total-input')[3];
 const totalCountRollback = document.getElementsByClassName('total-input')[4];
 
+let select = document.querySelector('select')
 let screenCount = 0
 let screens = document.querySelectorAll('.screen');
 
@@ -37,16 +40,27 @@ const appData = {
 
         startBtn.addEventListener('click', appData.buttonBlock)
         buttonPlus.addEventListener('click', appData.addScreenBlock)
+        resetBtn.addEventListener('click', this.reset)
     },
     start: function() {
-        appData.addScreens()
-        appData.addServices()
-
+        appData.zeroing()
+        appData.adselectBoxcreens()
+        appData.adselectBoxervices()
         appData.addPrices()
         // appData.getServicePercentPrices(),
         appData.checkingForMistakes()
         // appData.logger()
         appData.showResult()
+        appData.disabled()
+        appData.btnSwitch()
+    },
+    zeroing: function() {
+        appData.fullPrice = 0
+        appData.servicePricesNumber = 0
+        appData.servicePricesPercent = 0
+        appData.screenPrice = 0
+        appData.screens.length = 0
+        screenCount = 0
     },
     buttonBlock: function () {
         let input
@@ -62,6 +76,10 @@ const appData = {
             appData.start()
         }
     },
+    btnSwitch: function() {
+        startBtn.style.display = 'none'
+        resetBtn.style.display = 'flex'
+    },
     checkingForMistakes: function () {
         const changing = function(event) {
             inputRangeValue.textContent = event.target.value + '%'
@@ -69,6 +87,40 @@ const appData = {
         }
 
         inputRange.addEventListener('input', changing)
+    },
+    reset: function () {
+        const check = document.querySelectorAll('.custom-checkbox')
+        const screenBox = mainBox.querySelectorAll('.main-controls__item')
+        const selectBox = mainBox.querySelector('select')
+        const inputBox = mainBox.querySelector('.main-controls__input > input')
+
+        resetBtn.style.display = 'none'
+        startBtn.style.display = 'flex'
+        inputRange.value = 0
+        inputRangeValue.textContent = '0%'
+
+        check.forEach(function (item) {
+            item.checked = false
+        })
+
+        inputBox.value = ''
+        selectBox.selectedIndex = 0
+
+        selectBox.disabled = false
+        inputBox.disabled = false
+        buttonPlus.disabled = false
+
+        total.value = 0
+        totalCountOther.value = 0
+        fullTotalCount.value = 0
+        totalCountRollback.value = 0
+        totalCount.value = 0
+
+        for(let key in screenBox) {
+            if (key > 0) {
+                screenBox[key].remove()
+            }
+        }
     },
     showResult: function () {
         total.value = appData.screenPrice
@@ -122,10 +174,79 @@ const appData = {
             
         })
     },
+    disabled: function() {
+        const selectBox = mainBox.querySelectorAll('select')
+        const inputBox = mainBox.querySelectorAll('.main-controls__input > input')
+
+        buttonPlus.disabled = true
+
+        for(let key = 0; key < selectBox.length; key++){
+            selectBox[key].disabled = true
+        }
+
+        for(let key = 0; key <inputBox.length; key++){
+        inputBox[key].disabled = true
+        }
+    },
     addScreenBlock: function () {
         const cloneScreen = screens[0].cloneNode(true)
 
         screens[screens.length - 1].before(cloneScreen)
+    },
+    checkingForMistakes: function() {
+
+        const changing = function(event) {
+            inputRangeValue.textContent = event.target.value + '%'
+            this.rollback = event.target.value
+            appData.showResult()
+            // console.log(appData.rollback)
+        }
+
+        inputRange.addEventListener('input', changing)
+    },
+    adselectBoxcreens: function() {
+        screens = document.querySelectorAll('.screen')
+
+        screens.forEach((screen, index) => {
+            const select = screen.querySelector('select')
+            const input = screen.querySelector('input')
+            const selectName = select.options[select.selectedIndex].textContent
+
+            appData.screens.push({ 
+                id: index, 
+                name: selectName, 
+                price: +select.value * +input.value
+            });
+
+        })
+
+    },
+    adselectBoxervices: function() {
+        otherItemsPercent.forEach((item) => {
+            const check = item.querySelector('input[type=checkbox]')
+            const label = item.querySelector('label')
+            const input = item.querySelector('input[type=text]')
+            // console.log(check, label, input)
+            if (check.checked) {
+                appData.servicesPercent[label.textContent] = +input.value
+            }
+        })
+
+        otherItemsNumber.forEach((item) => {
+            const check = item.querySelector('input[type=checkbox]')
+            const label = item.querySelector('label')
+            const input = item.querySelector('input[type=text]')
+            // console.log(check, label, input)
+            if (check.checked) {
+                appData.servicesNumber[label.textContent] = +input.value
+            }
+        })
+    },
+    adselectBoxcreenBlock: function() {
+        const cloneScreen = screens[0].cloneNode(true)
+        const input = cloneScreen.querySelector('input')
+        input.value = ''
+        screens[screens.length - 1].after(cloneScreen)
     },
     addPrices: function() {
 
@@ -166,7 +287,7 @@ const appData = {
     }
 }
 
+appData.checkingForMistakes()
 appData.init();
-
 
 
